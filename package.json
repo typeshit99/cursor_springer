@@ -1,0 +1,33 @@
+{
+  "name": "secure-jwt-auth-system",
+  "version": "1.0.0",
+  "description": "A comprehensive, bulletproof Spring Boot backend with a beautiful React frontend featuring enterprise-grade security measures",
+  "main": "index.js",
+  "scripts": {
+    "install-all": "npm install && cd frontend && npm install",
+    "start-backend": "mvn spring-boot:run",
+    "start-frontend": "cd frontend && npm start",
+    "dev": "concurrently \"npm run start-backend\" \"npm run start-frontend\"",
+    "build": "mvn clean install && cd frontend && npm run build",
+    "test": "mvn test && cd frontend && npm test",
+    "clean": "mvn clean && cd frontend && npm run build --if-present"
+  },
+  "keywords": [
+    "spring-boot",
+    "react",
+    "jwt",
+    "authentication",
+    "security",
+    "typescript",
+    "material-ui"
+  ],
+  "author": "Security Team",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  }
+}

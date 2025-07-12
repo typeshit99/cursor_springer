@@ -3,6 +3,7 @@ package com.example.jwtauthapp.dto;
 public class AuthResponse {
 
     private String token;
+    private String refreshToken;
     private String type = "Bearer";
     private String username;
     private String message;
@@ -12,6 +13,12 @@ public class AuthResponse {
 
     public AuthResponse(String token, String username) {
         this.token = token;
+        this.username = username;
+    }
+
+    public AuthResponse(String token, String refreshToken, String username) {
+        this.token = token;
+        this.refreshToken = refreshToken;
         this.username = username;
     }
 
@@ -42,6 +49,14 @@ public class AuthResponse {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getRefreshToken() {
+        return refreshToken;
+    }
+
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
     }
 
     public String getMessage() {

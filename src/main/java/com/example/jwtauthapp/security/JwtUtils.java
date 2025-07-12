@@ -25,6 +25,9 @@ public class JwtUtils {
     @Value("${jwt.expiration}")
     private Long expiration;
 
+    @Value("${jwt.refresh-expiration}")
+    private Long refreshExpiration;
+
     private SecretKey getSigningKey() {
         return Keys.hmacShaKeyFor(secret.getBytes());
     }
@@ -56,22 +59,55 @@ public class JwtUtils {
 
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
-        return createToken(claims, userDetails.getUsername());
+        claims.put("type", "access");
+        claims.put("authorities", userDetails.getAuthorities().stream()
+                .map(Object::toString)
+                .toList());
+        return createToken(claims, userDetails.getUsername(), expiration);
     }
 
-    private String createToken(Map<String, Object> claims, String subject) {
+    public String generateRefreshToken(UserDetails userDetails) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("type", "refresh");
+        return createToken(claims, userDetails.getUsername(), refreshExpiration);
+    }
+
+    private String createToken(Map<String, Object> claims, String subject, Long expirationTime) {
         return Jwts.builder()
                 .claims(claims)
                 .subject(subject)
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + expiration))
+                .expiration(new Date(System.currentTimeMillis() + expirationTime))
                 .signWith(getSigningKey(), Jwts.SIG.HS256)
                 .compact();
     }
 
     public Boolean validateToken(String token, UserDetails userDetails) {
-        final String username = extractUsername(token);
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+        try {
+            final String username = extractUsername(token);
+            final String tokenType = extractClaim(token, claims -> claims.get("type", String.class));
+            
+            return (username.equals(userDetails.getUsername()) && 
+                    !isTokenExpired(token) && 
+                    "access".equals(tokenType));
+        } catch (Exception e) {
+            logger.error("Token validation failed: {}", e.getMessage());
+            return false;
+        }
+    }
+
+    public Boolean validateRefreshToken(String token, UserDetails userDetails) {
+        try {
+            final String username = extractUsername(token);
+            final String tokenType = extractClaim(token, claims -> claims.get("type", String.class));
+            
+            return (username.equals(userDetails.getUsername()) && 
+                    !isTokenExpired(token) && 
+                    "refresh".equals(tokenType));
+        } catch (Exception e) {
+            logger.error("Refresh token validation failed: {}", e.getMessage());
+            return false;
+        }
     }
 
     public Boolean validateToken(String token) {
