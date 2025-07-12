@@ -1,0 +1,13 @@
+/workspace/src/main/java/com/example/jwtauthapp/dto/LoginRequest.java
+/workspace/src/main/java/com/example/jwtauthapp/JwtAuthApplication.java
+/workspace/src/main/java/com/example/jwtauthapp/security/JwtAuthenticationFilter.java
+/workspace/src/main/java/com/example/jwtauthapp/entity/User.java
+/workspace/src/main/java/com/example/jwtauthapp/service/CustomUserDetailsService.java
+/workspace/src/main/java/com/example/jwtauthapp/controller/TestController.java
+/workspace/src/main/java/com/example/jwtauthapp/repository/UserRepository.java
+/workspace/src/main/java/com/example/jwtauthapp/security/JwtUtils.java
+/workspace/src/main/java/com/example/jwtauthapp/controller/AuthController.java
+/workspace/src/main/java/com/example/jwtauthapp/dto/AuthResponse.java
+/workspace/src/main/java/com/example/jwtauthapp/dto/RegisterRequest.java
+/workspace/src/main/java/com/example/jwtauthapp/service/UserService.java
+/workspace/src/main/java/com/example/jwtauthapp/config/SecurityConfig.java
